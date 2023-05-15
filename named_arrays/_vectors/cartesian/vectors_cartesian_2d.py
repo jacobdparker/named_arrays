@@ -144,6 +144,100 @@ class Cartesian2dVectorLinearSpace(
     AbstractCartesian2dVectorSpace,
     na.AbstractCartesianVectorLinearSpace,
 ):
+    """
+    A :class:`Cartesian2dVectorArray` with attributes :attr:`x` and :attr:`y` that are both instances of :class:`ScalarLinearSpace`.
+
+    :class:`Cartesian2dVectorLinearSpace` can be used to quickly make a uniform 2D linear grid.
+
+    .. jupyter-execute::
+
+        import named_arrays as na
+
+        position = na.Cartesian2dVectorLinearSpace(
+            start = -10,
+            stop = 10,
+            axis = na.Cartesian2dVectorArray(
+                x = 'position_x',
+                y = 'position_y',
+                ),
+            num = 21,
+            )
+
+        print(position)
+
+    Note above that :class:`Cartesian2dVectorLinearSpace` s are implicitly defined until necessary.
+
+    .. jupyter-execute::
+
+        print(position.explicit)
+
+    It can also be used to create more interesting 2D linear grids with units.
+
+    .. jupyter-execute::
+
+        import astropy.units as u
+
+        spectral_grid = na.Cartesian2dVectorLinearSpace(
+            start = na.Cartesian2dVectorArray(
+                x = -5 * u.AA,
+                y = -10 * u.arcsec,
+                ),
+            stop = na.Cartesian2dVectorArray(
+                x = 5 * u.AA,
+                y = 10 * u.arcsec,
+                ),
+            num = na.Cartesian2dVectorArray(
+                x = 10,
+                y = 30,
+                ),
+            axis = na.Cartesian2dVectorArray(
+                x = 'wavelength',
+                y = 'slit_position',
+                ),
+            )
+
+        print(spectral_grid.explicit)
+
+    Even one that changes in time.
+
+    .. jupyter-execute::
+
+        spectral_grid = na.Cartesian2dVectorLinearSpace(
+            start = na.Cartesian2dVectorArray(
+                x = na.ScalarLinearSpace(-5, 5, axis = 'time', num=3) * u.AA,
+                y = na.ScalarLinearSpace(-10, 10, axis = 'time', num=3) * u.arcsec,
+                ),
+            stop = na.Cartesian2dVectorArray(
+                x = na.ScalarLinearSpace(5, 15, axis = 'time', num=3) * u.AA,
+                y = na.ScalarLinearSpace(10, 30, axis = 'time', num=3) * u.arcsec,
+                ),
+            num = na.Cartesian2dVectorArray(
+                x = 5,
+                y = 11,
+                ),
+            axis = na.Cartesian2dVectorArray(
+                x = 'wavelength',
+                y = 'slit_position',
+                ),
+            )
+
+        print(spectral_grid.explicit)
+
+    A similar grid could also be built using math.
+
+    .. jupyter-execute::
+
+        velocity = na.Cartesian2dVectorArray(
+            x = 5 * u.m/u.s,
+            y = 3 * u.m/u.s,
+            )
+        time = na.ScalarLinearSpace(0 * u.s, 2 * u.s, axis='time', num=3)
+        position = position * u.m + velocity * time
+        print(position.explicit)
+
+
+    """
+
     pass
 
 
